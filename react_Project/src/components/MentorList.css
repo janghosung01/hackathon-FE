@@ -17,3 +17,33 @@
   gap: 24px;
   width: 100%;
 }
+
+
+h2 {
+  margin-top: 3%;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 3%;
+}
+
+h3{
+  margin-left: 3%;
+}
+.mentor-card p{
+    margin-left: 3%;
+}
+
+.mentor-card img{
+    margin-left: 3%;
+    margin-top: 3%;
+}
+.mentor-card{
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff; 
+}
+
+
+#lan{
+  margin-bottom: 3%; 
+}
