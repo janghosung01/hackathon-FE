@@ -61,15 +61,16 @@ const Header = () => {
         },
         body: JSON.stringify(requestData),
       });
-
-      alert(`${userType === "mentor" ? "멘토" : "멘티"} 회원가입 성공!`);
+    
+     alert(`${userType === "mentor" ? "멘토" : "멘티"} 회원가입 성공!`);
       console.log("✅ 회원가입 성공:", response);
-      ///////
-      console.log(response.code);
-      if (response.code == 400) {
-        // 이미존재하는아이디
-        alert("이미 존재하는 아이디입니다.");
-      } else if (response.code == 201) {
+      /////// 
+      console.log(response.success);
+      if(response.success===400){
+        // 이미존재하는아이디 
+
+
+      }else if(response.success===201){
         //회원가입 성공 했습니다
         alert("회원가입에 성공했습니다!");
         nav("/");
@@ -103,18 +104,19 @@ const Header = () => {
       });
       if (response.success == 200) {
         //로그인 성공
+        alert("로그인에 성공했습니다!");
+        setIsLogin(true);
+        nav("/");
       } else if (response.code == 401) {
         //아이디 또는 비밀번호가 올바르지 않습니다.
+        alert("아이디 또는 비밀번호가 올바르지 않습니다.");
       }
       if (response.ok) {
         const result = await response.json();
         console.log("✅ 로그인 성공:", result);
         console.log(response);
-        localStorage.setItem("token", result.data.accessToken);
-        console.log("🗝️ 토큰 저장 완료:", result.data.accessToken);
-        //  토큰을 localStorage에 저장
         if (result.data.accessToken) {
-          localStorage.setItem("token", result.data.accessToken);
+          localStorage.setItem("Authorization", "Bearer " + result.data.accessToken);
           console.log("🗝️ 토큰 저장 완료:", result.data.accessToken);
         }
         ///////
