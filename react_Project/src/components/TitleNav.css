@@ -1,0 +1,27 @@
+
+#TitleConTainer{
+        display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;  
+    width:70%;
+    margin: 0 auto; /* 가로 중앙 정렬 */
+    gap:80px;
+}
+
+.TitleText{
+
+      width: 70%;
+
+  }
+  .Title{
+    text-align: center;   
+  }
+  .Pcontent{
+    text-align: center;   
+    padding-left: 20px;
+      
+    padding-right: 20px;
+  }
+
+
