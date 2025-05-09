@@ -27,7 +27,62 @@ const Header = () => {
   const onClickLogout = () => {
     setIsLogin(false);
   };
+///
+const handleRegister = async (e) => {
+  e.preventDefault(); // 기본 새로고침 막기
 
+  const requestData = {
+    id: formData.id,
+    password: formData.password,
+    name: formData.name,
+    email: formData.email,
+    phone: formData.phone,
+    gender: formData.gender,
+    region: formData.region,
+  };
+
+  try {
+    const response = await fetch("/auth/signup/mentee", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", // JSON 전송
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      console.log("✅ 회원가입 성공:", result);
+      alert("멘티 회원가입 성공!");
+    } else {
+      const error = await response.json();
+      console.error("❌ 실패 사유:", error);
+      alert("회원가입 실패: " + (error.message || "오류 발생"));
+    }
+  } catch (err) {
+    console.error("❌ 네트워크 오류:", err);
+    alert("서버와 통신 중 문제가 발생했습니다.");
+  }
+};
+
+
+  //객체 상태 선언 
+  const [formData, setFormData] = useState({
+  id: "",
+  password: "",
+  name: "",
+  email: "",
+  phone: "",
+  gender: "",  
+  region: "",
+});
+  const handleChange = (e) => {
+  const { id, value } = e.target;
+  setFormData((prev) => ({
+    ...prev,
+    [id.replace("reg-", "")]: value, // 예: reg-name → name
+  }));
+};
   return (
     <header className="header">
       <div className="container header-container">
@@ -105,27 +160,48 @@ const Header = () => {
               &times;
             </span>
             <h2>회원가입</h2>
-            <form>
+            <form onSubmit={handleRegister}>
               {/* 공통 입력 항목 */}
               <div className="form-group">
                 <label htmlFor="reg-id">아이디</label>
-                <input type="text" id="reg-id" required />
+                <input type="text" 
+                id="reg-id"
+                value={formData.id}
+                onChange={handleChange} 
+                required />
               </div>
               <div className="form-group">
                 <label htmlFor="reg-password">비밀번호</label>
-                <input type="password" id="reg-password" required />
+                <input type="password" 
+                id="reg-password" 
+                required 
+                value={formData.password}
+                onChange={handleChange}
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="reg-confirm-password">비밀번호 확인</label>
-                <input type="password" id="reg-confirm-password" required />
+                <input type="password" 
+                id="reg-confirm-password" 
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+                
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="reg-name">이름</label>
-                <input type="text" id="reg-name" required />
+                <input type="text" id="reg-name" 
+                value={formData.name}
+                onChange={handleChange}
+                required />
               </div>
               <div className="form-group">
                 <label htmlFor="reg-region">지역</label>
-                <select id="reg-region" required>
+                <select id="reg-region" 
+                value={formData.region}
+                onChange={handleChange}
+                required>
                   <option value="">선택</option>
                   <option value="SEOUL">서울특별시</option>
                   <option value="BUSAN">부산광역시</option>
@@ -148,7 +224,10 @@ const Header = () => {
               </div>
               <div className="form-group">
                 <label htmlFor="reg-gender">성별</label>
-                <select id="reg-gender" required>
+                <select id="reg-gender"
+                 value={formData.gender}
+                  onChange={handleChange}
+                 required>
                   <option value="">선택</option>
                   <option value="male">남자</option>
                   <option value="female">여자</option>
@@ -156,13 +235,18 @@ const Header = () => {
               </div>
               <div className="form-group">
                 <label htmlFor="reg-email">이메일</label>
-                <input type="email" id="reg-email" required />
+                <input type="email" id="reg-email"
+                value={formData.email}
+                onChange={handleChange}
+                required />
               </div>
               <div className="form-group">
                 <label htmlFor="reg-phone">전화번호</label>
                 <input
                   type="tel"
                   id="reg-phone"
+                  value={formData.phone}
+                  onChange={handleChange}
                   required
                   placeholder="예: 010-1234-5678"
                 />
@@ -178,7 +262,13 @@ const Header = () => {
                       name="userType"
                       value="mentee"
                       checked={userType === "mentee"}
-                      onChange={() => setUserType("mentee")}
+                       onChange={(e) => {
+                      setUserType("mentee");
+                      setFormData((prev) => ({
+                        ...prev,
+                        userType: e.target.value,
+                      }));
+                        }}
                     />
                     멘티
                   </label>
@@ -188,7 +278,13 @@ const Header = () => {
                       name="userType"
                       value="mentor"
                       checked={userType === "mentor"}
-                      onChange={() => setUserType("mentor")}
+                      onChange={(e) => {
+                        setUserType("mentor");
+                        setFormData((prev) => ({
+                          ...prev,
+                          userType: e.target.value,
+                        }));
+                      }}
                     />
                     멘토
                   </label>
@@ -204,6 +300,8 @@ const Header = () => {
                       type="text"
                       id="reg-keywords"
                       placeholder="예: 진로, 대외활동"
+                      value={formData.keywords}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="form-group">
@@ -212,11 +310,20 @@ const Header = () => {
                       id="reg-description"
                       rows="3"
                       placeholder="자기소개를 입력하세요"
+                      value={formData.description}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="form-group">
                     <label htmlFor="reg-profile-pic">프로필 사진</label>
-                    <input type="file" id="reg-profile-pic" accept="image/*" />
+                    <input type="file" id="reg-profile-pic" accept="image/*"
+                      onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        profilePic: e.target.files[0], // 파일 객체 저장
+                      }))
+                    }
+                    />
                   </div>
                 </>
               )}
