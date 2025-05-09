@@ -1,11 +1,33 @@
 import "./MentorSearch.css";
-const MentorSearch = () => {
+import { useState } from "react";
+
+const MentorSearch = ({ onFilterChange }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [area, setArea] = useState("");
+  const [keyword, setKeyword] = useState("");
+
+  const handleSearchClick = () => {
+    onFilterChange({
+      searchTerm,
+      area,
+      keyword,
+    });
+  };
+
   return (
     <div className="parentDiv">
       <div className="ContainerSearch">
         <div className="searchRow">
-          <input className="SearchInput" type="text" placeholder="멘토 검색" />
-          <button className="btn Search-btn">검색</button>
+          <input
+            className="SearchInput"
+            type="text"
+            placeholder="멘토 검색"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <button className="btn Search-btn" onClick={handleSearchClick}>
+            검색
+          </button>
         </div>
         <div className="filterOptions">
           <span>지역</span>
@@ -14,7 +36,11 @@ const MentorSearch = () => {
         </div>
 
         <div className="OptSelect">
-          <select name="Area">
+          <select
+            name="Area"
+            value={area}
+            onChange={(e) => setArea(e.target.value)}
+          >
             <option value="">선택</option>
             <option value="SEOUL">서울특별시</option>
             <option value="BUSAN">부산광역시</option>
@@ -34,7 +60,11 @@ const MentorSearch = () => {
             <option value="GYEONGNAM">경상남도</option>
             <option value="JEJU">제주특별자치도</option>
           </select>
-          <select name="keyWord ">
+          <select
+            name="keyWord"
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+          >
             <option value="">키워드</option>
             <option value="LIVING_SUPPORT">생활적응</option>
             <option value="COMMUNICATION">한국어/소통</option>
