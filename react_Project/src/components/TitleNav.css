@@ -1,27 +1,56 @@
-
-#TitleConTainer{
-        display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;  
-    width:70%;
-    margin: 0 auto; /* 가로 중앙 정렬 */
-    gap:80px;
+#TitleConTainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto; /* 가로 중앙 정렬 */
+  gap: 40px;
+  margin-top: 30px;
 }
 
-.TitleText{
+.TitleText {
+  width: 70%;
+}
 
-      width: 70%;
+.Title {
+  text-align: center;
+  font-size: 240%;
+  margin-bottom: 10px;
+}
 
-  }
-  .Title{
-    text-align: center;   
-  }
-  .Pcontent{
-    text-align: center;   
-    padding-left: 20px;
-      
-    padding-right: 20px;
-  }
+.Pcontent {
+  text-align: center;
+  padding-left: 20px;
 
+  padding-right: 20px;
+}
 
+.tab-menu {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #ddd;
+  width: 90%;
+}
+
+.tab-btn {
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+  color: #4a6cf7;
+}
+
+.tab-btn.active {
+  color: #4a6cf7;
+  border-bottom-color: #4a6cf7;
+}

@@ -39,8 +39,9 @@ const Header = () => {
             <li onClick={() => nav("/")} style={{ cursor: "pointer" }}>
               홈
             </li>
-            <li style={{ cursor: "pointer" }}>내 멘토</li>
-            <li style={{ cursor: "pointer" }}>멘토 등록</li>
+            <li onClick={() => nav("/about")} style={{ cursor: "pointer" }}>
+              소개
+            </li>
           </ul>
           <div className="auth-buttons">
             {isLogin ? (
@@ -124,12 +125,26 @@ const Header = () => {
               </div>
               <div className="form-group">
                 <label htmlFor="reg-region">지역</label>
-                <input
-                  type="text"
-                  id="reg-region"
-                  required
-                  placeholder="예: 서울"
-                />
+                <select id="reg-region" required>
+                  <option value="">선택</option>
+                  <option value="SEOUL">서울특별시</option>
+                  <option value="BUSAN">부산광역시</option>
+                  <option value="DAEGU">대구광역시</option>
+                  <option value="INCHEON">인천광역시</option>
+                  <option value="GWANGJU">광주광역시</option>
+                  <option value="DAEJEON">대전광역시</option>
+                  <option value="ULSAN">울산광역시</option>
+                  <option value="SEJONG">세종특별자치시</option>
+                  <option value="GYEONGGI">경기도</option>
+                  <option value="GANGWON">강원특별자치도</option>
+                  <option value="CHUNGBUK">충청북도</option>
+                  <option value="CHUNGNAM">충청남도</option>
+                  <option value="JEOLLABUK">전북특별자치도</option>
+                  <option value="JEOLLANAM">전라남도</option>
+                  <option value="GYEONGBUK">경상북도</option>
+                  <option value="GYEONGNAM">경상남도</option>
+                  <option value="JEJU">제주특별자치도</option>
+                </select>
               </div>
               <div className="form-group">
                 <label htmlFor="reg-gender">성별</label>
