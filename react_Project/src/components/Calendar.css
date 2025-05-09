@@ -1,0 +1,82 @@
+.calendar {
+  margin: 0 auto;
+  margin-bottom: 40px;
+  overflow-x: auto;
+}
+
+.fc .fc-scrollgrid {
+  table-layout: fixed !important; /* ← 필수 */
+}
+
+.fc .fc-col-header-cell,
+.fc .fc-daygrid-day {
+  width: 14.28% !important;
+  max-width: 14.28%;
+  box-sizing: border-box;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  max-height: 80%;
+  overflow-y: auto;
+  position: relative;
+}
+
+.modal h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 120px;
+}
+
+.submit-btn {
+  width: 100%;
+  background-color: #4a6cf7;
+  color: white;
+  padding: 12px;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  background-color: #3a5bd9;
+}
