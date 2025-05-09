@@ -1,6 +1,9 @@
-.CardContainer{
-      display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* 가로로 카드 채움 */
+.CardContainer {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(250px, 1fr)
+  ); /* 가로로 카드 채움 */
   grid-auto-rows: auto;
   gap: 20px;
   width: 90%;
