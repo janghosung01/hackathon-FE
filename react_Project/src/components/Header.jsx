@@ -38,8 +38,10 @@ const handleRegister = async (e) => {
     email: formData.email,
     phone: formData.phone,
     gender: formData.gender,
-    region: formData.region,
+    city: formData.region,
   };
+  console.log("👇 서버로 보낼 데이터입니다");
+  console.table(requestData);
 
   try {
     const response = await fetch("/auth/signup/mentee", {
@@ -229,8 +231,8 @@ const handleRegister = async (e) => {
                   onChange={handleChange}
                  required>
                   <option value="">선택</option>
-                  <option value="male">남자</option>
-                  <option value="female">여자</option>
+                  <option value="MALE">남자</option>
+                  <option value="FEMALE">여자</option>
                 </select>
               </div>
               <div className="form-group">
