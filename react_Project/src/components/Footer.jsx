@@ -42,13 +42,7 @@ const Footer = () => {
                 <a onClick={() => nav("/")}>홈</a>
               </li>
               <li>
-                <a onClick={() => nav("/")}>소개</a>
-              </li>
-              <li>
-                <a onClick={() => nav("/")}>내 멘토</a>
-              </li>
-              <li>
-                <a onClick={() => nav("/")}>내 멘토</a>
+                <a onClick={() => nav("/mypage")}>마이페이지</a>
               </li>
             </ul>
           </div>

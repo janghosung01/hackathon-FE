@@ -39,8 +39,8 @@ const Header = () => {
             <li onClick={() => nav("/")} style={{ cursor: "pointer" }}>
               홈
             </li>
-            <li onClick={() => nav("/about")} style={{ cursor: "pointer" }}>
-              소개
+            <li onClick={() => nav("/mypage")} style={{ cursor: "pointer" }}>
+              마이페이지
             </li>
           </ul>
           <div className="auth-buttons">
