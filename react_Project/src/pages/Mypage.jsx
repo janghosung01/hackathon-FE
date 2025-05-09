@@ -1,16 +1,14 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import TitleNav from "../components/TitleNav";
 
-const Calender = () => {
+const Mypage = () => {
   return (
     <>
       <Header />
-      <TitleNav />
-      <main>Calender</main>
+      <main>Mypage</main>
       <Footer />
     </>
   );
 };
 
-export default Calender;
+export default Mypage;
