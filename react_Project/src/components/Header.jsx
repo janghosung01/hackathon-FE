@@ -23,7 +23,7 @@ const Header = () => {
   const onClickLogout = () => {
     setIsLogin(false);
   };
-///멘티 전송
+///회원가입 
 const handleRegister = async (e) => {
   e.preventDefault(); // 기본 새로고침 막기
 
@@ -63,16 +63,21 @@ const handleRegister = async (e) => {
       body: JSON.stringify(requestData),
     });
 
-    console.log(response.code);
+
     
-    if (response.ok) {
-      const result = await response.json();
-      alert(`${userType === "mentor" ? "멘토" : "멘티"} 회원가입 성공!`);
+     alert(`${userType === "mentor" ? "멘토" : "멘티"} 회원가입 성공!`);
       console.log("✅ 회원가입 성공:", result);
-    } else {
-      const error = await response.json();
-      alert("회원가입 실패: " + (error.message || "오류 발생"));
-    }
+      /////// 
+      console.log(response.code);
+      if(response.code==400){
+        // 이미존재하는아이디 
+
+
+      }else if(response.code==201){
+        //회원가입 성공 했습니다
+      }
+
+
   } catch (err) {
     console.error("❌ 서버 통신 오류:", err);
     alert("서버와 연결할 수 없습니다.");
@@ -100,7 +105,12 @@ const handleLogin = async (e) => {
       },
       body: JSON.stringify(requestData),
     });
-
+    if(response.success==200){
+        //로그인 성공 
+    }
+    else if(code==401){
+      //아이디 또는 비밀번호가 올바르지 않습니다.
+    }
     if (response.ok) {
       const result = await response.json();
       console.log("✅ 로그인 성공:", result);
@@ -116,11 +126,7 @@ const handleLogin = async (e) => {
       alert("로그인 성공!");
       setIsLogin(true);
       setShowLoginModal(false);
-    } else {
-      const error = await response.json();
-      console.error("❌ 로그인 실패:", error);
-      alert("로그인 실패: " + (error.message || "오류 발생"));
-    }
+    } 
   } catch (err) {
     console.error("❌ 네트워크 오류:", err);
     alert("서버와 연결할 수 없습니다.");
