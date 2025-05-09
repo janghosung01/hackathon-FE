@@ -9,7 +9,7 @@ const Calender = () => {
       <Header />
       <TitleNav />
       <main>
-        <Calender />
+        <Calendar />
       </main>
       <Footer />
     </>

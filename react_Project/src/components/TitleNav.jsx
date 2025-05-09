@@ -20,7 +20,7 @@ const TitleNav = () => {
           멘토 목록
         </Link>
         <Link
-          to="/calender"
+          to="/calendar"
           className={`tab-btn ${
             location.pathname === "/calendar" ? "active" : ""
           }`}
