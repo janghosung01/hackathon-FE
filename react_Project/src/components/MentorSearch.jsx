@@ -6,17 +6,15 @@ const MentorSearch = ({ onFilterChange }) => {
   const [area, setArea] = useState("");
   const [keyword, setKeyword] = useState("");
   const [reviewScore, setReviewsSore] = useState("");
-  const page=2;
+  const page=1;
   const size=6;
   const language="KOREAN"
-const handleSearchClick = async () => {
+const handleSearchClick = async (page,size) => {
   const requestData = {
     keyword:searchTerm,
     city:area,
     subject:keyword,
     minRating:reviewScore,
-    page:page,
-    size:size,
     language:language,
   };
 
@@ -32,8 +30,9 @@ const handleSearchClick = async () => {
     if (response) {
       const result = await response.json();
       console.log("🔍 검색 결과:", result);
-
+      onFilterChange?.(result);
     }
+      //response 를 App.jsx 에서쓰고싶어
   } catch (err) {
     console.error("❌ 네트워크 오류:", err);
     alert("서버와 연결할 수 없습니다.");
