@@ -1,5 +1,5 @@
 import "./MentorSearch.css";
-
+import MentorCard from "./MentorCard";
 const MentorSearch = () => {
   return (<div className="parentDiv">
     
@@ -37,11 +37,17 @@ const MentorSearch = () => {
           </select>
           <select name="keyWord ">
               <option value="">키워드</option>
-              <option value="">1</option>
-              <option value="">2</option>
-              <option value="">3</option>
-              <option value="">4</option>
-              <option value="">5</option>  
+              <option value="LIVING_SUPPORT">생활적응</option>
+              <option value="COMMUNICATION">한국어/소통</option>
+              <option value="EMPLOYMENT">취업/노동</option>
+              <option value="MEDICAL_HEALTH">의료/건강</option>
+              <option value="LEGAL_VISA">법률/비자/행정</option>
+              <option value="CULTURE">문화/예절</option>
+              <option value="EDUCATION">교육</option>
+              <option value="FAMILY">가족/양육</option>
+              <option value="PUBLIC_SERVICE">공공서비스</option>
+              <option value="LOCAL_INFO">지역정보</option>
+              <option value="FRIEND">친구</option>  
               
           </select>
           <select name="reviewScore">
@@ -59,7 +65,6 @@ const MentorSearch = () => {
       
 
     </div>
-
   </div>);
 };
 
