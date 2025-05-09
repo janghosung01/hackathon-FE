@@ -19,15 +19,11 @@ const Header = () => {
     setShowLoginModal(false);
   };
 
-  const loginSubmit = () => {
-    setIsLogin(true);
-    setShowLoginModal(false);
-  };
 
   const onClickLogout = () => {
     setIsLogin(false);
   };
-///
+///멘티 전송
 const handleRegister = async (e) => {
   e.preventDefault(); // 기본 새로고침 막기
 
@@ -44,12 +40,12 @@ const handleRegister = async (e) => {
   console.table(requestData);
 
   try {
-    const response = await fetch("localhost:8080/auth/signup/mentee", {
+    const response = await fetch("http://localhost:8080/auth/signup/mentee", {
       method: "POST",
       headers: {
         "Content-Type": "application/json", // JSON 전송
       },
-
+        body: JSON.stringify(requestData),
     });
 
     if (response.ok) {
@@ -66,9 +62,67 @@ const handleRegister = async (e) => {
     alert("서버와 통신 중 문제가 발생했습니다.");
   }
 };
+////로그인 전송 포스트
+const handleLogin = async (e) => {
+  e.preventDefault();
 
+  const requestData = {
+    id: loginInfo.id,
+    password: loginInfo.password,
+  };
 
-  //객체 상태 선언 
+  console.log("🔐 로그인 요청:", requestData);
+  console.log("👉 ID:", loginInfo.id);
+  console.log("👉 Password:", loginInfo.password);
+  console.log("👉 Password:", loginInfo);
+  
+  try {
+    const response = await fetch("http://localhost:8080/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      console.log("✅ 로그인 성공:", result);
+
+      //  토큰을 localStorage에 저장
+      if (result.token) {
+        localStorage.setItem("token", result.token);
+        console.log("🗝️ 토큰 저장 완료:", result.token);
+      }
+      ///////
+      alert("로그인 성공!");
+      setIsLogin(true);
+      setShowLoginModal(false);
+    } else {
+      const error = await response.json();
+      console.error("❌ 로그인 실패:", error);
+      alert("로그인 실패: " + (error.message || "오류 발생"));
+    }
+  } catch (err) {
+    console.error("❌ 네트워크 오류:", err);
+    alert("서버와 연결할 수 없습니다.");
+  }
+};
+
+  //로그인 객체
+  const [loginInfo,setLoginInfo]=useState({
+    id: "",
+    password: ""
+  });
+  //////
+  const handleLoginChange = (e) => {
+  const { name, value } = e.target;
+  setLoginInfo((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+};
+  //객체 멘티 상태 선언 
   const [formData, setFormData] = useState({
   id: "",
   password: "",
@@ -78,6 +132,7 @@ const handleRegister = async (e) => {
   gender: "",  
   region: "",
 });
+///////
   const handleChange = (e) => {
   const { id, value } = e.target;
   setFormData((prev) => ({
@@ -85,6 +140,7 @@ const handleRegister = async (e) => {
     [id.replace("reg-", "")]: value, // 예: reg-name → name
   }));
 };
+/////////
   return (
     <header className="header">
       <div className="container header-container">
@@ -129,19 +185,27 @@ const handleRegister = async (e) => {
               &times;
             </span>
             <h2>로그인</h2>
-            <form>
+            <form  onSubmit={handleLogin}>
               <div className="form-group">
-                <label htmlFor="email">이메일</label>
-                <input type="email" id="email" required />
+                <label htmlFor="id">아이디</label>
+                <input type="text" name="id" 
+                 id="login-id" 
+                value={loginInfo.id}
+                onChange={handleLoginChange}
+                required />
               </div>
               <div className="form-group">
                 <label htmlFor="password">비밀번호</label>
-                <input type="password" id="password" required />
+                <input type="text" name="password" 
+                 id="login-password" 
+                value={loginInfo.password}
+                onChange={handleLoginChange}
+                required />
               </div>
               <button
                 type="submit"
                 className="btn submit-btn"
-                onClick={loginSubmit}
+
               >
                 로그인
               </button>
