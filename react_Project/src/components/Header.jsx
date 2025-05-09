@@ -61,19 +61,20 @@ const Header = () => {
         },
         body: JSON.stringify(requestData),
       });
-    
-     alert(`${userType === "mentor" ? "멘토" : "멘티"} 회원가입 성공!`);
-      console.log("✅ 회원가입 성공:", response);
-      /////// 
-      console.log(response.success);
-      if(response.success===400){
-        // 이미존재하는아이디 
 
+      const result = await response.json();
 
-      }else if(response.success===201){
-        //회원가입 성공 했습니다
-        alert("회원가입에 성공했습니다!");
+      if (response.ok) {
+        console.log("✅ 로그인 성공:", result);
+        localStorage.setItem("Authorization", "Bearer " + result.data.accessToken);
+        alert("로그인 성공!");
+        setIsLogin(true);
+        setShowLoginModal(false);
         nav("/");
+      } else {
+        // 실패 응답 처리 (e.g. 400, 401, 500 등)
+        console.error("❌ 로그인 실패:", result);
+        alert(`로그인 실패: ${result.message || "서버 오류"}`);
       }
     } catch (err) {
       console.error("❌ 서버 통신 오류:", err);
@@ -102,15 +103,8 @@ const Header = () => {
         },
         body: JSON.stringify(requestData),
       });
-      if (response.success == 200) {
-        //로그인 성공
-        alert("로그인에 성공했습니다!");
-        setIsLogin(true);
-        nav("/");
-      } else if (response.code == 401) {
-        //아이디 또는 비밀번호가 올바르지 않습니다.
-        alert("아이디 또는 비밀번호가 올바르지 않습니다.");
-      }
+      const result = await response.json();
+
       if (response.ok) {
         const result = await response.json();
         console.log("✅ 로그인 성공:", result);
@@ -123,6 +117,11 @@ const Header = () => {
         alert("로그인 성공!");
         setIsLogin(true);
         setShowLoginModal(false);
+      }
+      else{
+        // 실패 응답 처리 (e.g. 400, 401, 500 등)
+        console.error("❌ 로그인 실패:", result);
+        alert(`로그인 실패: ${result.message || "서버 오류"}`);
       }
     } catch (err) {
       console.error("❌ 네트워크 오류:", err);
