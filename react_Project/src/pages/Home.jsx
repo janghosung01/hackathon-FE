@@ -7,9 +7,11 @@ const Home = () => {
   return (
     <>
       <Header />
-      <TitleNav />
-      <MentorSearch />
-      <MentorCard />
+      <main>
+        <TitleNav />
+        <MentorSearch />
+        <MentorCard />
+      </main>
       <Footer />
     </>
   );
