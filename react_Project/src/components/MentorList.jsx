@@ -97,7 +97,7 @@ const MentorList = () => {
           </p>
           <p>설명: {mentor.description}</p>
           <p>과목: {mentor.subjects.map((s) => s.name).join(", ")}</p>
-          <p>언어: {mentor.languages.map((l) => l.name).join(", ")}</p>
+          <p id="lan">언어: {mentor.languages.map((l) => l.name).join(", ")}</p>
         </div>
       ))}
     </div>
