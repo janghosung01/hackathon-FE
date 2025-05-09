@@ -1,0 +1,41 @@
+
+.parentDiv {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;  
+  width:70%;
+    margin: 0 auto; /* 가로 중앙 정렬 */
+}
+
+
+.TitleText{
+
+    width: 70%;
+
+}
+.Title{
+  text-align: center;   
+}
+.Pcontent{
+  text-align: center;   
+  padding-left: 20px;
+    
+  padding-right: 20px;
+}
+
+.ContainerSearch{
+    background-color: pink;
+    width:100%;
+  display: flex;
+  flex-direction: column; /* 세로로 쌓이게 */
+  align-items: center;     /* 가운데 정렬 */
+  gap: 10px;
+}
+
+/* 인풋과 버튼을 감쌀 div */
+.searchRow {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
