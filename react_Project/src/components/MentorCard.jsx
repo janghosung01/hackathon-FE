@@ -16,6 +16,7 @@ const MentorCard = ({ mentor }) => {
         <p>설명: {mentor.description}</p>
         <p>과목: {mentor.subjects.map((s) => s.name).join(", ")}</p>
         <p>언어: {mentor.languages.map((l) => l.name).join(", ")}</p>
+        <button>신청하기</button>
       </div>
     </div>
   );

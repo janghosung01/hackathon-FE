@@ -42,3 +42,22 @@
   font-size: 0.95rem;
   color: #555;
 }
+
+.mentor-card button {
+  background-color: #4a6cf7;
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 80%;
+  max-width: 120px;
+  margin-top: 10px;
+}
+
+.mentor-card button:hover {
+  background-color: #3a5bd9;
+}
