@@ -8,94 +8,27 @@ import PostDetail from "./pages/PostDetail";
 import WritePost from "./pages/WritePost";
 import { Routes, Route } from "react-router-dom";
 import { createContext } from "react";
+import { useState } from "react";
+import MentorSearch from "./components/MentorSearch"; // 경로는 프로젝트에 맞게 수정
+import MentorList from "./components/MentorList"; // 결과를 보여줄 컴포넌트 예시
 
-const mockData = [
-  {
-    id: 1,
-    name: "홍길동",
-    city: { name: "SEOUL" },
-    subjects: [{ name: "COMMUNICATION" }, { name: "CULTURE" }],
-    rating: 4.5,
-    reviewCnt: 12,
-    gender: "MALE",
-    profileImage: "https://example.com/image.jpg",
-    description: "한국 생활을 도와드릴 멘토입니다.",
-    level: 3,
-    languages: [{ name: "Korean" }, { name: "English" }],
-  },
-  {
-    id: 2,
-    name: "홍",
-    city: { name: "INCHEON" },
-    subjects: [{ name: "COMMUNICATION" }, { name: "CULTURE" }],
-    rating: 3.5,
-    reviewCnt: 22,
-    gender: "MALE",
-    profileImage: "https://example.com/image.jpg",
-    description: "hi everyone",
-    level: 3,
-    languages: [{ name: "Korean" }, { name: "English" }],
-  },
-  {
-    id: 2,
-    name: "홍",
-    city: { name: "INCHEON" },
-    subjects: [{ name: "COMMUNICATION" }, { name: "LIVING_SUPPORT" }],
-    rating: 3.5,
-    reviewCnt: 22,
-    gender: "MALE",
-    profileImage: "https://example.com/image.jpg",
-    description: "hi everyone",
-    level: 3,
-    languages: [{ name: "Korean" }, { name: "English" }],
-  },
-  {
-    id: 2,
-    name: "홍",
-    city: { name: "INCHEON" },
-    subjects: [{ name: "COMMUNICATION어" }, { name: "CULTURE" }],
-    rating: 3.5,
-    reviewCnt: 22,
-    gender: "MALE",
-    profileImage: "https://example.com/image.jpg",
-    description: "hi everyone",
-    level: 3,
-    languages: [{ name: "Korean" }, { name: "English" }],
-  },
-  {
-    id: 2,
-    name: "홍",
-    city: { name: "INCHEON" },
-    subjects: [{ name: "COMMUNICATION" }, { name: "CULTURE" }],
-    rating: 3.5,
-    reviewCnt: 22,
-    gender: "MALE",
-    profileImage: "https://example.com/image.jpg",
-    description: "hi everyone",
-    level: 3,
-    languages: [{ name: "Korean" }, { name: "English" }],
-  },
-  {
-    id: 2,
-    name: "홍",
-    city: { name: "INCHEON" },
-    subjects: [{ name: "COMMUNICATION" }, { name: "CULTURE" }],
-    rating: 3.5,
-    reviewCnt: 22,
-    gender: "MALE",
-    profileImage: "https://example.com/image.jpg",
-    description: "hi everyone",
-    level: 3,
-    languages: [{ name: "Korean" }, { name: "English" }],
-  },
-];
+
 
 export const MentorInfoContext = createContext();
+export const MentorSearchChange = createContext();
 
 function App() {
+  const [searchResults, setSearchResults] = useState([]);
+
+  const handleFilterChange = (results) => {
+    setSearchResults(results); // MentorSearch에서 전달된 결과 저장
+  };
+  console.log("App전달", searchResults);
+
   return (
     <>
-      <MentorInfoContext.Provider value={mockData}>
+      <MentorInfoContext.Provider value={searchResults}>
+        <MentorSearchChange.Provider value={handleFilterChange}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/calendar" element={<SharedCalendar />} />
@@ -105,6 +38,7 @@ function App() {
           <Route path="/board/page/:id" element={<PostDetail />} />
           <Route path="/board/new" element={<WritePost />} />
         </Routes>
+        </MentorSearchChange.Provider>
       </MentorInfoContext.Provider>
     </>
   );

@@ -1,18 +1,45 @@
 import "./MentorSearch.css";
 import { useState } from "react";
 
+
 const MentorSearch = ({ onFilterChange }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [area, setArea] = useState("");
   const [keyword, setKeyword] = useState("");
-
-  const handleSearchClick = () => {
-    onFilterChange({
-      searchTerm,
-      area,
-      keyword,
-    });
+  const [reviewScore, setReviewsSore] = useState("");
+  const page=1;
+  const size=6;
+  const language="KOREAN"
+const handleSearchClick = async (page,size) => {
+  const requestData = {
+    keyword:searchTerm,
+    city:area,
+    subject:keyword,
+    minRating:reviewScore,
+    language:language,
   };
+
+  try {
+    const response = await fetch("http://localhost:8080/api/mentors/search", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    if (response) {
+      const result = await response.json();
+      console.log("🔍 검색 결과:", result);
+      onFilterChange?.(result);
+    }
+      //response 를 App.jsx 에서쓰고싶어
+  } catch (err) {
+    console.error("❌ 네트워크 오류:", err);
+    alert("서버와 연결할 수 없습니다.");
+  }
+};
+
 
   return (
     <div className="parentDiv">
@@ -78,13 +105,16 @@ const MentorSearch = ({ onFilterChange }) => {
             <option value="LOCAL_INFO">지역정보</option>
             <option value="FRIEND">친구</option>
           </select>
-          <select name="reviewScore">
+          <select name="reviewScore"
+            value={reviewScore}
+            onChange={(e) => setReviewsSore(e.target.value)}
+          >
             <option value="">평점순</option>
-            <option value="">(4.5)⭐⭐⭐⭐☆</option>
-            <option value="">(4.0)⭐⭐⭐⭐ </option>
-            <option value="">(3.5)⭐⭐⭐☆ </option>
-            <option value="">(3.0)⭐⭐⭐ </option>
-            <option value="">(2.5)⭐⭐☆ </option>
+            <option value="4.5">(4.5)⭐⭐⭐⭐☆</option>
+            <option value="4.0">(4.0)⭐⭐⭐⭐ </option>
+            <option value="3.5">(3.5)⭐⭐⭐☆ </option>
+            <option value="3.0">(3.0)⭐⭐⭐ </option>
+            <option value="2.5">(2.5)⭐⭐☆ </option>
           </select>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -7,13 +7,24 @@ import "./Calendar.css";
 const Calendar = () => {
   const [events, setEvents] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState("")
+  const [mentees, setMentees] = useState([]);;
   const [formData, setFormData] = useState({
+    menteeId: "",
     title: "",
-    menteeName: "",
-    startTime: "",
-    date: "",
+    startAt: ""
   });
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/mentors/mentees")
+        .then((res) => res.json())
+        .then((data) => {
+          setMentees(data);
+        })
+        .catch((error) => {
+          console.error("멘티 목록 조회 실패:", error);
+        });
+  }, []);
 
   const handleDateClick = (info) => {
     setSelectedDate(info.dateStr);
@@ -46,19 +57,25 @@ const Calendar = () => {
                 }
               />
 
-              <label>멘티 이름</label>
-              <input
-                type="text"
-                value={formData.menteeName}
-                onChange={(e) =>
-                  setFormData({ ...formData, menteeName: e.target.value })
-                }
-              />
+              <label>멘티 선택</label>
+              <select
+                  value={formData.menteeId}
+                  onChange={(e) =>
+                      setFormData({ ...formData, menteeId: e.target.value })
+                  }
+              >
+                <option value="">-- 멘티 선택 --</option>
+                {mentees.map((mentee) => (
+                    <option key={mentee.id} value={mentee.id}>
+                      {mentee.name}
+                    </option>
+                ))}
+              </select>
 
               <label>시작 시간</label>
               <input
                 type="time"
-                value={formData.startTime}
+                value={formData.startAt}
                 onChange={(e) =>
                   setFormData({ ...formData, startTime: e.target.value })
                 }
@@ -81,15 +98,15 @@ const Calendar = () => {
                       ...prev,
                       {
                         title: `${formData.title}`,
-                        start: `${selectedDate}T${formData.startTime}`,
+                        start: `${selectedDate}T${formData.startAt}`,
                       },
                     ]);
                     // 초기화
                     setShowModal(false);
                     setFormData({
                       title: "",
-                      menteeName: "",
-                      startTime: "",
+                      menteeId: "",
+                      startAt: "",
                       date: "",
                     });
                   }}

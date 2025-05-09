@@ -19,51 +19,48 @@ const Header = () => {
     setShowLoginModal(false);
   };
 
-
   const onClickLogout = () => {
     setIsLogin(false);
   };
-///회원가입 
-const handleRegister = async (e) => {
-  e.preventDefault(); // 기본 새로고침 막기
+  ///회원가입
+  const handleRegister = async (e) => {
+    e.preventDefault(); // 기본 새로고침 막기
 
     const commonData = {
-    id: formData.id,
-    password: formData.password,
-    name: formData.name,
-    email: formData.email,
-    phone: formData.phone,
-    gender: formData.gender,
-    city: formData.region,
-  };
+      id: formData.id,
+      password: formData.password,
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      gender: formData.gender,
+      city: formData.region,
+    };
 
-  let requestData;
-  let url;
+    let requestData;
+    let url;
 
     if (userType === "mentor") {
-    url = "http://localhost:8080/auth/signup/mentor";
-    requestData = {
-      ...commonData,
-      keywords: formData.keywords,
-      languages: formData.languages,
-      description: formData.description,
-      profileImage: formData.profileimage, // Base64
-    };
-  } else {
-    url = "http://localhost:8080/auth/signup/mentee";
-    requestData = commonData;
-  }
-      console.log( requestData); 
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestData),
-    });
-
-
+      url = "http://localhost:8080/auth/signup/mentor";
+      requestData = {
+        ...commonData,
+        keywords: formData.keywords,
+        languages: formData.languages,
+        description: formData.description,
+        profileImage: formData.profileimage, // Base64
+      };
+    } else {
+      url = "http://localhost:8080/auth/signup/mentee";
+      requestData = commonData;
+    }
+    console.log(requestData);
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
     
      alert(`${userType === "mentor" ? "멘토" : "멘티"} 회원가입 성공!`);
       console.log("✅ 회원가입 성공:", response);
@@ -75,97 +72,101 @@ const handleRegister = async (e) => {
 
       }else if(response.success===201){
         //회원가입 성공 했습니다
+        alert("회원가입에 성공했습니다!");
+        nav("/");
       }
+    } catch (err) {
+      console.error("❌ 서버 통신 오류:", err);
+      alert("서버와 연결할 수 없습니다.");
+    }
+  };
+  ////로그인 전송 포스트
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
+    const requestData = {
+      loginId: loginInfo.id,
+      password: loginInfo.password,
+    };
 
-  } catch (err) {
-    console.error("❌ 서버 통신 오류:", err);
-    alert("서버와 연결할 수 없습니다.");
-  }
-};
-////로그인 전송 포스트
-const handleLogin = async (e) => {
-  e.preventDefault();
+    console.log("🔐 로그인 요청:", requestData);
+    console.log("👉 ID:", loginInfo.id);
+    console.log("👉 Password:", loginInfo.password);
+    console.log("👉 Password:", loginInfo);
 
-  const requestData = {
-    loginId: loginInfo.id,
-    password: loginInfo.password,
+    try {
+      const response = await fetch("http://localhost:8080/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+      if (response.success == 200) {
+        //로그인 성공
+        alert("로그인에 성공했습니다!");
+        setIsLogin(true);
+        nav("/");
+      } else if (response.code == 401) {
+        //아이디 또는 비밀번호가 올바르지 않습니다.
+        alert("아이디 또는 비밀번호가 올바르지 않습니다.");
+      }
+      if (response.ok) {
+        const result = await response.json();
+        console.log("✅ 로그인 성공:", result);
+        console.log(response);
+        if (result.data.accessToken) {
+          localStorage.setItem("Authorization", "Bearer " + result.data.accessToken);
+          console.log("🗝️ 토큰 저장 완료:", result.data.accessToken);
+        }
+        ///////
+        alert("로그인 성공!");
+        setIsLogin(true);
+        setShowLoginModal(false);
+      }
+    } catch (err) {
+      console.error("❌ 네트워크 오류:", err);
+      alert("서버와 연결할 수 없습니다.");
+    }
   };
 
-  console.log("🔐 로그인 요청:", requestData);
-  console.log("👉 ID:", loginInfo.id);
-  console.log("👉 Password:", loginInfo.password);
-  console.log("👉 Password:", loginInfo);
-  
-  try {
-    const response = await fetch("http://localhost:8080/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestData),
-    });
-    if(response.success===200){
-        //로그인 성공 
-    }
-
-    if (response.ok) {
-      const result = await response.json();
-      console.log("✅ 로그인 성공:", result);
-      console.log(response);
-      //  토큰을 localStorage에 저장
-      if (result.data.accessToken) {
-        localStorage.setItem("Authorization", "Bearer " + result.data.accessToken);
-        console.log("🗝️ 토큰 저장 완료:", result.data.accessToken);
-      }
-      ///////
-      alert("로그인 성공!");
-      setIsLogin(true);
-      setShowLoginModal(false);
-    } 
-  } catch (err) {
-    console.error("❌ 네트워크 오류:", err);
-    alert("서버와 연결할 수 없습니다.");
-  }
-};
-
   //로그인 객체
-  const [loginInfo,setLoginInfo]=useState({
+  const [loginInfo, setLoginInfo] = useState({
     id: "",
-    password: ""
+    password: "",
   });
   //////
   const handleLoginChange = (e) => {
-  const { name, value } = e.target;
-  setLoginInfo((prev) => ({
-    ...prev,
-    [name]: value,
-  }));
-};
-  //객체 멘티 상태 선언 
+    const { name, value } = e.target;
+    setLoginInfo((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  //객체 멘티 상태 선언
   const [formData, setFormData] = useState({
-  id: "",
-  password: "",
-  confirmPassword: "", 
-  name: "",
-  email: "",
-  phone: "",
-  gender: "",  
-  region: "",
-  languages: "",
-  subjects: "",
-  profileimage: "",
-  description: "",
-});
-///////
+    id: "",
+    password: "",
+    confirmPassword: "",
+    name: "",
+    email: "",
+    phone: "",
+    gender: "",
+    region: "",
+    languages: "",
+    subjects: "",
+    profileimage: "",
+    description: "",
+  });
+  ///////
   const handleChange = (e) => {
-  const { id, value } = e.target;
-  setFormData((prev) => ({
-    ...prev,
-    [id.replace("reg-", "")]: value, // 예: reg-name → name
-  }));
-};
-/////////
+    const { id, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [id.replace("reg-", "")]: value, // 예: reg-name → name
+    }));
+  };
+  /////////
   return (
     <header className="header">
       <div className="container header-container">
@@ -210,28 +211,30 @@ const handleLogin = async (e) => {
               &times;
             </span>
             <h2>로그인</h2>
-            <form  onSubmit={handleLogin}>
+            <form onSubmit={handleLogin}>
               <div className="form-group">
                 <label htmlFor="id">아이디</label>
-                <input type="text" name="id" 
-                 id="login-id" 
-                value={loginInfo.id}
-                onChange={handleLoginChange}
-                required />
+                <input
+                  type="text"
+                  name="id"
+                  id="login-id"
+                  value={loginInfo.id}
+                  onChange={handleLoginChange}
+                  required
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="password">비밀번호</label>
-                <input type="text" name="password" 
-                 id="login-password" 
-                value={loginInfo.password}
-                onChange={handleLoginChange}
-                required />
+                <input
+                  type="text"
+                  name="password"
+                  id="login-password"
+                  value={loginInfo.password}
+                  onChange={handleLoginChange}
+                  required
+                />
               </div>
-              <button
-                type="submit"
-                className="btn submit-btn"
-
-              >
+              <button type="submit" className="btn submit-btn">
                 로그인
               </button>
             </form>
@@ -255,35 +258,43 @@ const handleLogin = async (e) => {
               {/* 공통 입력 항목 */}
               <div className="form-group">
                 <label htmlFor="reg-id">아이디</label>
-                <input type="text" 
-                id="reg-id"
-                value={formData.id}
-                onChange={handleChange} 
-                required />
+                <input
+                  type="text"
+                  id="reg-id"
+                  value={formData.id}
+                  onChange={handleChange}
+                  required
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="reg-password">비밀번호</label>
-                <input type="password" 
-                id="reg-password" 
-                required 
-                value={formData.password}
-                onChange={handleChange}
+                <input
+                  type="password"
+                  id="reg-password"
+                  required
+                  value={formData.password}
+                  onChange={handleChange}
                 />
               </div>
-              
+
               <div className="form-group">
                 <label htmlFor="reg-name">이름</label>
-                <input type="text" id="reg-name" 
-                value={formData.name}
-                onChange={handleChange}
-                required />
+                <input
+                  type="text"
+                  id="reg-name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="reg-region">지역</label>
-                <select id="reg-region" 
-                value={formData.region}
-                onChange={handleChange}
-                required>
+                <select
+                  id="reg-region"
+                  value={formData.region}
+                  onChange={handleChange}
+                  required
+                >
                   <option value="">선택</option>
                   <option value="SEOUL">서울특별시</option>
                   <option value="BUSAN">부산광역시</option>
@@ -306,10 +317,12 @@ const handleLogin = async (e) => {
               </div>
               <div className="form-group">
                 <label htmlFor="reg-gender">성별</label>
-                <select id="reg-gender"
-                 value={formData.gender}
+                <select
+                  id="reg-gender"
+                  value={formData.gender}
                   onChange={handleChange}
-                 required>
+                  required
+                >
                   <option value="">선택</option>
                   <option value="MALE">남자</option>
                   <option value="FEMALE">여자</option>
@@ -317,10 +330,13 @@ const handleLogin = async (e) => {
               </div>
               <div className="form-group">
                 <label htmlFor="reg-email">이메일</label>
-                <input type="email" id="reg-email"
-                value={formData.email}
-                onChange={handleChange}
-                required />
+                <input
+                  type="email"
+                  id="reg-email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="reg-phone">전화번호</label>
@@ -344,13 +360,13 @@ const handleLogin = async (e) => {
                       name="userType"
                       value="mentee"
                       checked={userType === "mentee"}
-                       onChange={(e) => {
-                      setUserType("mentee");
-                      setFormData((prev) => ({
-                        ...prev,
-                        userType: e.target.value,
-                      }));
-                        }}
+                      onChange={(e) => {
+                        setUserType("mentee");
+                        setFormData((prev) => ({
+                          ...prev,
+                          userType: e.target.value,
+                        }));
+                      }}
                     />
                     멘티
                   </label>
@@ -408,8 +424,11 @@ const handleLogin = async (e) => {
                   </div>
                   <div className="form-group">
                     <label htmlFor="reg-profile-pic">프로필 사진</label>
-                    <input type="file" id="reg-profile-pic" accept="image/*"
-                       onChange={(e) => {
+                    <input
+                      type="file"
+                      id="reg-profile-pic"
+                      accept="image/*"
+                      onChange={(e) => {
                         const file = e.target.files[0];
                         if (file) {
                           const reader = new FileReader();
