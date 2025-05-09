@@ -1,12 +1,19 @@
-.CardContainer {
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(250px, 1fr)
-  ); /* 가로로 카드 채움 */
-  grid-auto-rows: auto;
-  gap: 20px;
-  width: 90%;
+.mentor-list {
+  padding: 32px;
+  max-width: 100%;
   margin: 0 auto;
-  max-width: 1000px;
+}
+
+.mentor-list h2 {
+  font-size: 1.5rem;
+  margin-bottom: 24px;
+  color: #222;
+  text-align: center;
+}
+
+.mentor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  width: 100%;
 }
