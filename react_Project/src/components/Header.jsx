@@ -27,7 +27,7 @@ const Header = () => {
 const handleRegister = async (e) => {
   e.preventDefault(); // 기본 새로고침 막기
 
-  const requestData = {
+    const commonData = {
     id: formData.id,
     password: formData.password,
     name: formData.name,
@@ -36,30 +36,46 @@ const handleRegister = async (e) => {
     gender: formData.gender,
     city: formData.region,
   };
-  console.log("👇 서버로 보낼 데이터입니다");
-  console.table(requestData);
 
+  let requestData;
+  let url;
+
+    if (userType === "mentor") {
+    url = "http://localhost:8080/auth/signup/mentor";
+    requestData = {
+      ...commonData,
+      keywords: formData.keywords,
+      languages: formData.languages,
+      description: formData.description,
+      profileImage: formData.profileimage, // Base64
+    };
+  } else {
+    url = "http://localhost:8080/auth/signup/mentee";
+    requestData = commonData;
+  }
+      console.log( requestData); 
   try {
-    const response = await fetch("http://localhost:8080/auth/signup/mentee", {
+    const response = await fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json", // JSON 전송
+        "Content-Type": "application/json",
       },
-        body: JSON.stringify(requestData),
+      body: JSON.stringify(requestData),
     });
 
+    console.log(response.code);
+    
     if (response.ok) {
       const result = await response.json();
+      alert(`${userType === "mentor" ? "멘토" : "멘티"} 회원가입 성공!`);
       console.log("✅ 회원가입 성공:", result);
-      alert("멘티 회원가입 성공!");
     } else {
       const error = await response.json();
-      console.error("❌ 실패 사유:", error);
       alert("회원가입 실패: " + (error.message || "오류 발생"));
     }
   } catch (err) {
-    console.error("❌ 네트워크 오류:", err);
-    alert("서버와 통신 중 문제가 발생했습니다.");
+    console.error("❌ 서버 통신 오류:", err);
+    alert("서버와 연결할 수 없습니다.");
   }
 };
 ////로그인 전송 포스트
@@ -67,7 +83,7 @@ const handleLogin = async (e) => {
   e.preventDefault();
 
   const requestData = {
-    id: loginInfo.id,
+    loginId: loginInfo.id,
     password: loginInfo.password,
   };
 
@@ -88,11 +104,13 @@ const handleLogin = async (e) => {
     if (response.ok) {
       const result = await response.json();
       console.log("✅ 로그인 성공:", result);
-
+      console.log(response);
+      localStorage.setItem("token", result.data.accessToken);
+      console.log("🗝️ 토큰 저장 완료:", result.data.accessToken);
       //  토큰을 localStorage에 저장
-      if (result.token) {
-        localStorage.setItem("token", result.token);
-        console.log("🗝️ 토큰 저장 완료:", result.token);
+      if (result.data.accessToken) {
+        localStorage.setItem("token", result.data.accessToken);
+        console.log("🗝️ 토큰 저장 완료:", result.data.accessToken);
       }
       ///////
       alert("로그인 성공!");
@@ -126,11 +144,16 @@ const handleLogin = async (e) => {
   const [formData, setFormData] = useState({
   id: "",
   password: "",
+  confirmPassword: "", 
   name: "",
   email: "",
   phone: "",
   gender: "",  
   region: "",
+  languages: "",
+  subjects: "",
+  profileimage: "",
+  description: "",
 });
 ///////
   const handleChange = (e) => {
@@ -245,16 +268,7 @@ const handleLogin = async (e) => {
                 onChange={handleChange}
                 />
               </div>
-              <div className="form-group">
-                <label htmlFor="reg-confirm-password">비밀번호 확인</label>
-                <input type="password" 
-                id="reg-confirm-password" 
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                required
-                
-                />
-              </div>
+              
               <div className="form-group">
                 <label htmlFor="reg-name">이름</label>
                 <input type="text" id="reg-name" 
@@ -365,8 +379,18 @@ const handleLogin = async (e) => {
                     <input
                       type="text"
                       id="reg-keywords"
-                      placeholder="예: 진로, 대외활동"
+                      placeholder="LIVING_SUPPORT"
                       value={formData.keywords}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="reg-languages">사용 언어</label>
+                    <input
+                      type="text"
+                      id="reg-languages"
+                      placeholder="KOREAN"
+                      value={formData.languages}
                       onChange={handleChange}
                     />
                   </div>
@@ -383,12 +407,20 @@ const handleLogin = async (e) => {
                   <div className="form-group">
                     <label htmlFor="reg-profile-pic">프로필 사진</label>
                     <input type="file" id="reg-profile-pic" accept="image/*"
-                      onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        profilePic: e.target.files[0], // 파일 객체 저장
-                      }))
-                    }
+                       onChange={(e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onloadend = () => {
+                            setFormData((prev) => ({
+                              ...prev,
+                              profilePic: file,
+                              profileImage: reader.result, // Base64 저장
+                            }));
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      }}
                     />
                   </div>
                 </>
