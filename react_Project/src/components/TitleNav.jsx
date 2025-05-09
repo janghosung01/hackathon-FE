@@ -28,9 +28,9 @@ const TitleNav = () => {
           일정 캘린더
         </Link>
         <Link
-          to="/board"
+          to="/board/page"
           className={`tab-btn ${
-            location.pathname === "/board" ? "active" : ""
+            location.pathname === "/board/page" ? "active" : ""
           }`}
         >
           멘토 게시판
@@ -38,7 +38,7 @@ const TitleNav = () => {
         <Link
           to="/mymentor"
           className={`tab-btn ${
-            location.pathname === "/settings" ? "active" : ""
+            location.pathname === "/mymentor" ? "active" : ""
           }`}
         >
           내 멘토
