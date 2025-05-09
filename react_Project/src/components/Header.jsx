@@ -60,10 +60,10 @@ const handleRegister = async (e) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify("응답옴",requestData),
+      body: JSON.stringify(requestData),
     });
 
-    console.log(response);
+    console.log(response.code);
     
     if (response.ok) {
       const result = await response.json();
@@ -83,7 +83,7 @@ const handleLogin = async (e) => {
   e.preventDefault();
 
   const requestData = {
-    id: loginInfo.id,
+    loginId: loginInfo.id,
     password: loginInfo.password,
   };
 
@@ -104,11 +104,13 @@ const handleLogin = async (e) => {
     if (response.ok) {
       const result = await response.json();
       console.log("✅ 로그인 성공:", result);
-
+      console.log(response);
+      localStorage.setItem("token", result.data.accessToken);
+      console.log("🗝️ 토큰 저장 완료:", result.data.accessToken);
       //  토큰을 localStorage에 저장
-      if (result.token) {
-        localStorage.setItem("token", result.token);
-        console.log("🗝️ 토큰 저장 완료:", result.token);
+      if (result.data.accessToken) {
+        localStorage.setItem("token", result.data.accessToken);
+        console.log("🗝️ 토큰 저장 완료:", result.data.accessToken);
       }
       ///////
       alert("로그인 성공!");
