@@ -103,8 +103,12 @@ const Header = () => {
       });
       if (response.success == 200) {
         //로그인 성공
+        alert("로그인에 성공했습니다!");
+        setIsLogin(true);
+        nav("/");
       } else if (response.code == 401) {
         //아이디 또는 비밀번호가 올바르지 않습니다.
+        alert("아이디 또는 비밀번호가 올바르지 않습니다.");
       }
       if (response.ok) {
         const result = await response.json();
