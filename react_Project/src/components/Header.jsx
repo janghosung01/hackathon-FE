@@ -44,12 +44,12 @@ const handleRegister = async (e) => {
   console.table(requestData);
 
   try {
-    const response = await fetch("/auth/signup/mentee", {
+    const response = await fetch("localhost:8080/auth/signup/mentee", {
       method: "POST",
       headers: {
         "Content-Type": "application/json", // JSON 전송
       },
-      body: JSON.stringify(requestData),
+
     });
 
     if (response.ok) {
