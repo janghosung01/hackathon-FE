@@ -11,7 +11,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/calender" element={<SharedCalendar />} />
+        <Route path="/calendar" element={<SharedCalendar />} />
         <Route path="/board" element={<MentorBoard />} />
         <Route path="/mymentor" element={<MyMentor />} />
         <Route path="/mypage" element={<Mypage />} />
