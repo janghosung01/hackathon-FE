@@ -27,7 +27,7 @@ const Header = () => {
     e.preventDefault(); // 기본 새로고침 막기
 
     const commonData = {
-      id: formData.id,
+      loginId: formData.id,
       password: formData.password,
       name: formData.name,
       email: formData.email,
@@ -52,7 +52,8 @@ const Header = () => {
       url = "http://localhost:8080/auth/signup/mentee";
       requestData = commonData;
     }
-    console.log(requestData);
+    console.log("✅ 최종 전송 데이터:", requestData); // 객체 그대로 출력
+    console.log("✅ 전송되는 ID:", requestData.id); // ID만 따로 출력
     try {
       const response = await fetch(url, {
         method: "POST",
@@ -61,20 +62,33 @@ const Header = () => {
         },
         body: JSON.stringify(requestData),
       });
-
       const result = await response.json();
-
       if (response.ok) {
-        console.log("✅ 로그인 성공:", result);
-        localStorage.setItem("Authorization", "Bearer " + result.data.accessToken);
-        alert("로그인 성공!");
-        setIsLogin(true);
-        setShowLoginModal(false);
-        nav("/");
+        alert("회원가입 성공!");
+        console.log("✅ 회원가입 성공:", result);
+        setFormData({
+          id: "",
+          password: "",
+          confirmPassword: "",
+          name: "",
+          email: "",
+          phone: "",
+          gender: "",
+          region: "",
+          languages: "",
+          subjects: "",
+          profileimage: "",
+          description: "",
+        });
+
+        // 🔽 모달 닫기
+        setShowRegisterModal(false);
+
+        console.log(result.success);
       } else {
         // 실패 응답 처리 (e.g. 400, 401, 500 등)
-        console.error("❌ 로그인 실패:", result);
-        alert(`로그인 실패: ${result.message || "서버 오류"}`);
+        console.error("❌ 회원가입 실패:", result);
+        alert(`회원가입 실패: ${result.message || "서버 오류"}`);
       }
     } catch (err) {
       console.error("❌ 서버 통신 오류:", err);
@@ -106,9 +120,8 @@ const Header = () => {
       const result = await response.json();
 
       if (response.ok) {
-        const result = await response.json();
         console.log("✅ 로그인 성공:", result);
-        console.log(response);
+        console.log(result);
         if (result.data.accessToken) {
           localStorage.setItem("Authorization", "Bearer " + result.data.accessToken);
           console.log("🗝️ 토큰 저장 완료:", result.data.accessToken);
